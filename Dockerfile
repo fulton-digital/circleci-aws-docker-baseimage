@@ -16,6 +16,9 @@ RUN apt update && \
 
 # NOTE: You must have your AWS login environment variables (including region) set in order for this ECR login to work
 
-ENV LOGIN_COMMAND="$(aws ecr get-login --no-include-email)"
+ENV LOGIN_COMMAND="if [ ! -f ~/.docker/config.json ]; then $(aws ecr get-login --no-include-email); fi" \
+    BASH_ENV="~/.ecr_login"
 
-RUN echo $LOGIN_COMMAND >> ~/.bashrc
+RUN echo $LOGIN_COMMAND >> ~/.ecr_login
+
+SHELL ["/bin/bash", "-c"]
