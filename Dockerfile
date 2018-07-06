@@ -13,3 +13,9 @@ RUN apt update && \
     apt update && \
     apt install -y docker-ce &&\
     rm -rf /var/lib/apt/lists/*
+
+# NOTE: You must have your AWS login environment variables (including region) set in order for this ECR login to work
+
+ENV LOGIN_COMMAND="$(aws ecr get-login --no-include-email)"
+
+RUN echo $LOGIN_COMMAND >> ~/.bashrc
